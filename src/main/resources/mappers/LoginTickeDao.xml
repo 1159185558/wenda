@@ -1,0 +1,43 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.wenda.dao.LoginTicketDao">
+    <select id="getLoginTicketByTicket" parameterType="String" resultType="com.example.wenda.model.LoginTicket">
+        select * from loginticket where ticket = #{ticket}
+    </select>
+    <update id="updateStatus">
+        update loginticket  set status = #{newStatus} where ticket = #{ticket}
+    </update>
+    <insert id="addLoginTicket" parameterType="com.example.wenda.model.LoginTicket">
+        insert into loginticket
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="expired != null">
+                expired,
+            </if>
+            <if test="ticket != null">
+                ticket,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                 #{userId},
+            </if>
+            <if test="expired != null">
+                #{expired},
+            </if>
+            <if test="ticket != null">
+                #{ticket},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+        </trim>
+    </insert>
+</mapper>

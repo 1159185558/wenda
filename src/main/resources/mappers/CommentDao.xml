@@ -1,0 +1,87 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.wenda.dao.CommentDao">
+    <update id="updateStatus">
+        update comment set status = #{newStatus} where id = #{id}
+    </update>
+    <select id="getCommentCount" resultType="int">
+        select count(*) from comment
+        <where>
+            <if test="entityType != null">
+                entity_type = #{entityType}
+            </if>
+            <if test="entityId != null">
+                and entity_id = #{entityId}
+            </if>
+        </where>
+
+    </select>
+    <select id="getUserCommentCount" parameterType="int" resultType="int">
+        select count (*) from commment
+        <where>
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
+        </where>
+    </select>
+    <select id="getCommentListByEntity" resultType="com.example.wenda.model.Comment">
+        select * from comment
+        <where>
+            <if test="entityId != null">
+                entity_id = #{entityId}
+            </if>
+            <if test="entityType != null">
+                and entity_type = #{entityType}
+            </if>
+        </where>
+        order by create_date desc
+    </select>
+    <select id="getCommentById" parameterType="int" resultType="com.example.wenda.model.Comment">
+        select * from comment where id = #{id}
+    </select>
+    <insert id="addComment" parameterType="com.example.wenda.model.Comment">
+        insert into comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="entityId != null">
+                entity_id,
+            </if>
+            <if test="entityType != null">
+                entity_type,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="content != null">
+                #{content},
+            </if>
+            <if test="entityId != null">
+                #{entityId},
+            </if>
+            <if test="entityType != null">
+                #{entityType},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="createDate != null">
+                #{createDate},
+            </if>
+        </trim>
+    </insert>
+</mapper>

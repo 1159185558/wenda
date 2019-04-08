@@ -1,0 +1,58 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.wenda.dao.QuestionDao">
+    <update id="updateCommentCount">
+        update question set comment_count = #{commentCount} where id = #{id}
+    </update>
+    <update id="updateStatus">
+        update question set status = #{status} where id = #{id}
+    </update>
+    <select id="getCommentCount" parameterType="int" resultType="int">
+        select comment_count from question where id = #{id}
+    </select>
+    <insert id="addQuestion" parameterType="com.example.wenda.model.Question">
+        insert into question
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">
+                title,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="createdDate != null">
+                created_date,
+            </if>
+            <if test="commentCount != null">
+                comment_count,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">
+                #{title},
+            </if>
+            <if test="content != null">
+                #{content},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="createdDate != null">
+                #{createdDate},
+            </if>
+            <if test="commentCount != null">
+                #{commentCount},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+        </trim>
+    </insert>
+</mapper>
