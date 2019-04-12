@@ -52,11 +52,16 @@ public class QuestionServiImpl implements QuestionService {
     }
 
     @Override
-    public int deleteQuestion(Integer id,int status) {
-        if (id<0||id>1){
+    public int deleteQuestion(Integer id, int status) {
+        if (id < 0 || id > 1) {
             return 1;
         }
-        questionDao.updateStatus(id,status);
+        questionDao.updateStatus(id, status);
         return 0;
+    }
+
+    @Override
+    public Question getQuestionById(int id) {
+        return questionDao.getQuestionById(id);
     }
 }

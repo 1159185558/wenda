@@ -20,13 +20,15 @@ public interface CommentDao {
 
     int addComment(Comment comment);
 
+    //默认查出的结果status=1
     int getCommentCount(@Param("entityType") int entityType, @Param("entityId") int entityId);
 
+    //默认查出的结果status=1
     int getUserCommentCount(int userId);
 
     Comment getCommentById(int id);
 
     //Comment getCommentByEntity(@Param("entityType") int entityType,@Param("entityId") String entityId);
-
+    //默认查出的结果status=1
     List<Comment> getCommentListByEntity(@Param("entityType") int entityType, @Param("entityId") int entityId);
 }

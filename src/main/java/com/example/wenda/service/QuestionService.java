@@ -19,4 +19,6 @@ public interface QuestionService {
     int updateCommentCount(int questionId,int newCommentCount);
 
     int deleteQuestion(Integer id,int status);
+
+    Question getQuestionById(int id);
 }

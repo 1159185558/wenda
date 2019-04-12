@@ -9,7 +9,10 @@
         update question set status = #{status} where id = #{id}
     </update>
     <select id="getCommentCount" parameterType="int" resultType="int">
-        select comment_count from question where id = #{id}
+        select comment_count from question where id = #{id} and status = 1
+    </select>
+    <select id="getQuestionById" resultType="com.example.wenda.model.Question">
+        select * from question where id = #{id} and status = 1
     </select>
     <insert id="addQuestion" parameterType="com.example.wenda.model.Question">
         insert into question

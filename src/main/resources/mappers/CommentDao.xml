@@ -12,7 +12,7 @@
                 entity_type = #{entityType}
             </if>
             <if test="entityId != null">
-                and entity_id = #{entityId}
+                and entity_id = #{entityId} and status = 1
             </if>
         </where>
 
@@ -21,7 +21,7 @@
         select count (*) from commment
         <where>
             <if test="userId != null">
-                user_id = #{userId}
+                user_id = #{userId} and status = 1
             </if>
         </where>
     </select>
@@ -32,13 +32,13 @@
                 entity_id = #{entityId}
             </if>
             <if test="entityType != null">
-                and entity_type = #{entityType}
+                and entity_type = #{entityType} and status = 1
             </if>
         </where>
         order by create_date desc
     </select>
     <select id="getCommentById" parameterType="int" resultType="com.example.wenda.model.Comment">
-        select * from comment where id = #{id}
+        select * from comment where id = #{id} and status = 1
     </select>
     <insert id="addComment" parameterType="com.example.wenda.model.Comment">
         insert into comment

@@ -1,0 +1,52 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.wenda.dao.MessageDao">
+    <select id="getMessageLists" resultType="com.example.wenda.model.Message">
+        select count(*) as id from message where from_id = #{fromId} or to_id = #{toId} order by create_date desc
+    </select>
+    <insert id="addMessage" parameterType="com.example.wenda.model.Message">
+        insert into message
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fromId != null">
+                from_id,
+            </if>
+            <if test="toId != null">
+                to_id,
+            </if>
+             <if test="content != null">
+                 content,
+             </if>
+             <if test="conversationId != null">
+                 conversation_id,
+             </if>
+             <if test="createDate != null">
+                 create_date,
+             </if>
+             <if test="isRead != null">
+                 is_read,
+             </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fromId != null">
+                #{fromId},
+            </if>
+            <if test="toId != null">
+                #{toId},
+            </if>
+            <if test="content != null">
+                #{content},
+            </if>
+            <if test="conversationId != null">
+                #{conversationId},
+            </if>
+            <if test="createDate != null">
+                #{createDate},
+            </if>
+            <if test="isRead != null">
+                #{isRead},
+            </if>
+        </trim>
+    </insert>
+</mapper>

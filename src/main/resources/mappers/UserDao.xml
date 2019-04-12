@@ -14,6 +14,9 @@
     <select id="getUserIdByName" parameterType="String" resultType="Integer">
         select id from `user` where `name` = #{name}
     </select>
+    <select id="getUsernameById" parameterType="Integer" resultType="String">
+        select `name` from `user` where id = #{id}
+    </select>
     <select id="getUserById" parameterType="Integer" resultType="com.example.wenda.model.User">
         select * from `user` where id = #{id}
     </select>

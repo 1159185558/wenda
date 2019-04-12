@@ -24,4 +24,6 @@ public interface QuestionDao {
 
     int updateStatus(@Param("id") int id,
                      @Param("status") int status);
+    //返回没有被删除的符合条件的所有问题，默认status=1；
+    Question getQuestionById(int id);
 }

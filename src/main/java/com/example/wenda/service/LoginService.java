@@ -1,5 +1,7 @@
 package com.example.wenda.service;
 
+import com.example.wenda.model.User;
+
 import java.util.Map;
 
 /**
@@ -14,9 +16,13 @@ public interface LoginService {
 
     String getPasswordByName(String name);
 
+    String getUsernameById(int id);
+
     Map<String, Object> registerUser(String name, String password);
 
     Map<String,Object> login(String name,String password);
 
     void logout(String ticket);
+
+    User getUserByName(String name);
 }

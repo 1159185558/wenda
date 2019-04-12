@@ -24,4 +24,6 @@ public interface UserDao {
     Integer getUserIdByName(String name);
 
     User getUserById(Integer id);
+
+    String getUsernameById(Integer id);
 }

@@ -49,10 +49,15 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
+    public String getUsernameById(int id) {
+        return userDao.getUsernameById(id);
+    }
+
+    @Override
     public Map<String, Object> registerUser(String name, String password) {
         Map<String, Object> map = new HashMap<>();
         if (StringUtils.isBlank(name)) {
-            map.put("msg", "用户名不能为空");
+            map.put("code", "01");//用户名不能为空
             return map;
         }
         //用来匹配用户名，用户名中只能是数字、字母，汉字，_，-
@@ -60,16 +65,16 @@ public class LoginServiceImpl implements LoginService {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(name);
         if (!matcher.matches()) {
-            map.put("msg", "用户名不合法");
+            map.put("code", "02");//用户名不合法
             return map;
         }
         if (StringUtils.isBlank(password)) {
-            map.put("msg", "密码不能为空");
+            map.put("code", "03");//密码不能为空
             return map;
         }
         User user = userDao.getUserByName(name);
         if (user != null) {
-            map.put("msg", "用户已经被注册");
+            map.put("code", "04");//用户已经被注册
             return map;
         }
         user = new User();
@@ -84,6 +89,7 @@ public class LoginServiceImpl implements LoginService {
         //初测成功后生成ticket，直接登录
         String ticket = addLoginTicket(userDao.getUserIdByName(name));
         map.put("ticket", ticket);
+        map.put("code","00");
         return map;
     }
 
@@ -91,32 +97,38 @@ public class LoginServiceImpl implements LoginService {
     public Map<String, Object> login(String name, String password) {
         Map<String, Object> map = new HashMap<>();
         if (StringUtils.isBlank(name)) {
-            map.put("msg", "用户名不能为空");
+            map.put("code", "01");//用户名不能为空
             return map;
         }
         if (userDao.getUserByName(name) == null) {
-            map.put("msg", "用户名或密码不正确");
+            map.put("code", "02");//用户名或密码不正确
             return map;
         }
         if (StringUtils.isBlank(password)) {
-            map.put("meg", "密码不能为空");
+            map.put("code", "03");//密码不能为空
             return map;
         }
         String tmpPassword = userDao.getPasswordByUserName(name);
         String salt = userDao.getSaltByName(name);
         if (!MD5.MD5(password + salt).equals(tmpPassword)) {
-            map.put("msg", "用户名获密码不正确");
+            map.put("code", "02");//用户名获密码不正确
             return map;
         }
         int userId = userDao.getUserIdByName(name);
         String ticket = addLoginTicket(userDao.getUserIdByName(name));
         map.put("ticket", ticket);
+        map.put("code","00");//登陆成功
         return map;
     }
 
     @Override
     public void logout(String ticket) {
         loginTicketDao.updateStatus(0, ticket);
+    }
+
+    @Override
+    public User getUserByName(String name) {
+        return userDao.getUserByName(name);
     }
 
     public String addLoginTicket(Integer userId) {
