@@ -14,6 +14,7 @@ public class Message {
     private int fromId;
     private int toId;
     private String content;
+    //两个用户之间会话的conversation_id是唯一的，用来表示某两个用户之间的会话
     private String conversationId;
     private Date createDate;
     //默认为0，表示未读

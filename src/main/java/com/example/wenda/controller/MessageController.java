@@ -52,6 +52,10 @@ public class MessageController {
             message.setCreateDate(new Date());
             //message.setFromId(hostHolder.getUser().getId());
             message.setToId(user.getId());
+            //在设置conversation_id时，首先根据fron_id和to_id来查询Message对象
+            //若Message==null，则将conversation_id设为from_id-to_id这种形式
+            //若Message!=null，则将查询出的Message对象中的conversation_id赋值给新的消息对象
+
 //            message.setConversationId(hostHolder.getUser().getId() + "-" + user.getId());
             messageService.sendMessage(message);
             jsonObject = jsonUtil.toJsonObject("00", "发送成功");

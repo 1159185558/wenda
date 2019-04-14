@@ -2,8 +2,33 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.wenda.dao.MessageDao">
-    <select id="getMessageLists" resultType="com.example.wenda.model.Message">
-        select count(*) as id from message where from_id = #{fromId} or to_id = #{toId} order by create_date desc
+    <select id="getMessageLists" parameterType="Integer" resultType="com.example.wenda.model.Message">
+        select * from message
+        <where>
+            <if test="userId != null">
+                (from_id = #{userId} or to_id = #{userId}) and
+                create_date in (select max(create_date) as create_date from message group by conversation_id)
+                order by create_date desc
+            </if>
+        </where>
+    </select>
+    <select id="getMessageCounts" parameterType="Integer" resultType="Integer">
+        select count(*) from message
+        <where>
+            <if test="userId != null">
+                from_id = #{userId} or to_id = #{userId}
+                group by conversation_id order by create_date desc
+            </if>
+        </where>
+    </select>
+    <select id="getMinIdMessage" resultType="com.example.wenda.model.Message">
+        select * from message where from_id = #{fromId} and to_id = #{toId} and id in(
+        select min(id) as id from message where from_id = #{fromId} and to_id = #{toId}
+        )
+    </select>
+    <select id="getNotReadMessageCounts" parameterType="Integer" resultType="Integer">
+        select * from message where is_read = 0 and to_id = #{toId} group by conversation_id
+        order by create_date desc
     </select>
     <insert id="addMessage" parameterType="com.example.wenda.model.Message">
         insert into message
