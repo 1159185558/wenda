@@ -3,14 +3,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.wenda.dao.MessageDao">
     <select id="getMessageLists" parameterType="Integer" resultType="com.example.wenda.model.Message">
-        select * from message
-        <where>
-            <if test="userId != null">
+        select * from message where
+
                 (from_id = #{userId} or to_id = #{userId}) and
                 create_date in (select max(create_date) as create_date from message group by conversation_id)
                 order by create_date desc
-            </if>
-        </where>
+
     </select>
     <select id="getMessageCounts" parameterType="Integer" resultType="Integer">
         select count(*) from message

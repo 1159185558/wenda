@@ -1,5 +1,8 @@
 package com.example.wenda.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 /**
@@ -19,6 +22,9 @@ public class Comment {
     private int entityType;
     //评论的内容
     private String content;
+    //格式化时间，格式为 yyyy-MM-ddd HH:mm:ss
+    @DateTimeFormat(pattern = "yyyy-MM-ddd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createDate;
     //用来表示该回答或者评论是否被删除，0表示被删除，1表示处于正常状态
     private int status;

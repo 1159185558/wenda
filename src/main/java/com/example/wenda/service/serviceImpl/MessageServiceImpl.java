@@ -21,6 +21,7 @@ public class MessageServiceImpl implements MessageService {
     SensetiveWordFilter sensetiveWordFilter;
     @Autowired
     MessageDao messageDao;
+
     @Override
     public int sendMessage(Message message) {
         message.setContent(sensetiveWordFilter.filterSensetiveWord(message.getContent()));
@@ -29,21 +30,21 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<Message> getMessageLists(int userId) {
-        return null;
+        return messageDao.getMessageLists(userId);
     }
 
     @Override
     public Message getMessage(int fromId, int toId) {
-        return null;
+        return messageDao.getMinIdMessage(fromId, toId);
     }
 
     @Override
     public List<Integer> getMessageListCounts(int userId) {
-        return null;
+        return messageDao.getMessageCounts(userId);
     }
 
     @Override
     public List<Integer> getNotReadMessageCounts(int toId) {
-        return null;
+        return messageDao.getNotReadMessageCounts(toId);
     }
 }

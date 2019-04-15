@@ -1,6 +1,9 @@
 package com.example.wenda.model;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 /**
@@ -16,6 +19,9 @@ public class Message {
     private String content;
     //两个用户之间会话的conversation_id是唯一的，用来表示某两个用户之间的会话
     private String conversationId;
+    //格式化时间，格式为 yyyy-MM-ddd HH:mm:ss
+    @DateTimeFormat(pattern = "yyyy-MM-ddd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createDate;
     //默认为0，表示未读
     private int isRead;

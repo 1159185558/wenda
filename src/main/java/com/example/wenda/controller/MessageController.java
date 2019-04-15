@@ -10,12 +10,10 @@ import com.example.wenda.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: weilei
@@ -55,14 +53,43 @@ public class MessageController {
             //在设置conversation_id时，首先根据fron_id和to_id来查询Message对象
             //若Message==null，则将conversation_id设为from_id-to_id这种形式
             //若Message!=null，则将查询出的Message对象中的conversation_id赋值给新的消息对象
-
-//            message.setConversationId(hostHolder.getUser().getId() + "-" + user.getId());
+            int fromId = hostHolder.getUser().getId();
+            int toId = user.getId();
+            Message tmpMessage = messageService.getMessage(fromId, toId);
+            if (tmpMessage != null) {
+                message.setConversationId(tmpMessage.getConversationId());
+            } else {
+                message.setConversationId(fromId + "-" + toId);
+            }
             messageService.sendMessage(message);
             jsonObject = jsonUtil.toJsonObject("00", "发送成功");
         } catch (Exception e) {
             jsonObject = jsonUtil.toJsonObject("03", "发送失败");
             e.printStackTrace();
             logger.error("发送消息失败 " + e.getMessage());
+        }
+        return jsonObject;
+    }
+
+    /**
+     * 获取已登录用户的消息列表，对于每一个会话显示最新的消息。
+     *
+     * @return
+     */
+    @GetMapping("/getMessageLists")
+    public JSONObject getMessageLists() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            /*if (hostHolder.getUser() == null) {
+                return jsonUtil.toJsonObject("01", "用户未登录", null);
+            }
+            int userId = hostHolder.getUser().getId();*/
+            List<Message> messageList = messageService.getMessageLists(1);
+            jsonObject = jsonUtil.toJsonObject("00", "获取信息成功", messageList);
+        } catch (Exception e) {
+            jsonObject = jsonUtil.toJsonObject("02", "获取消息时失败", null);
+            logger.error("获取信息时失败： " + e.getMessage());
+            e.printStackTrace();
         }
         return jsonObject;
     }

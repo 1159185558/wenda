@@ -1,6 +1,9 @@
 package com.example.wenda.model;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 /**
@@ -12,6 +15,9 @@ import java.util.Date;
 public class LoginTicket {
     private Integer id;
     private Integer userId;
+    //格式化时间，格式为 yyyy-MM-ddd HH:mm:ss
+    @DateTimeFormat(pattern = "yyyy-MM-ddd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date expired;
     private Integer status;
     private String ticket;
