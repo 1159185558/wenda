@@ -18,15 +18,36 @@
 
     </select>
     <select id="getMinIdMessage" resultType="com.example.wenda.model.Message">
-        select * from message where from_id = #{fromId} and to_id = #{toId} and status and id in
+        select * from message where from_id in
+        <foreach collection="list" index="index" item="item"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+         and to_id in
+        <foreach collection="list" index="index" item="item"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and status = 1
+        and id in
         (
-            select min(id) as id from message where from_id = #{fromId} and to_id = #{toId} and status = 1
+            select min(id) as id from message where from_id in
+            <foreach collection="list" index="index" item="item"
+                     open="(" separator="," close=")">
+                  #{item}
+            </foreach>
+        and to_id in
+        <foreach collection="list" index="index" item="item"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and status = 1
         )
     </select>
-    <select id="getNotReadMessageCounts" parameterType="Integer" resultType="Integer">
-        select * from message where is_read = 0 and to_id = #{toId} and status = 1
-        group by conversation_id
-        order by create_date desc
+    <select id="getNotReadMessageCounts" resultType="Integer">
+        select count(*) from message where is_read = 0 and to_id = #{toId}
+        and conversation_id = #{conversationId}
+        and status = 1
     </select>
     <insert id="addMessage" parameterType="com.example.wenda.model.Message">
         insert into message
@@ -75,4 +96,10 @@
     <update id="updateStatus" parameterType="String">
         update message set status = 0 where conversation_id = #{conversationId}
     </update>
+    <update id="updateIsRead" parameterType="String">
+        update message set is_read = 1 where conversation_id = #{conversationId}
+    </update>
+    <select id="getMessageListsByConversationId" parameterType="String" resultType="com.example.wenda.model.Message">
+        select * from message where conversation_id = #{conversationId} order by create_date desc
+    </select>
 </mapper>

@@ -8,6 +8,8 @@ import com.example.wenda.model.User;
 import com.example.wenda.service.LoginService;
 import com.example.wenda.service.MessageService;
 import com.example.wenda.util.JsonUtil;
+import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,9 @@ public class MessageController {
                                   @RequestParam("toName") String toName) {
         JSONObject jsonObject;
         try {
+            if (StringUtils.isBlank(cotent) || StringUtils.isBlank(toName)) {
+                return jsonUtil.toJsonObject("04", "参数不合法");
+            }
             User user = loginService.getUserByName(toName);
             if (user == null) {
                 return jsonUtil.toJsonObject("01", "用户不存在");
@@ -74,6 +79,7 @@ public class MessageController {
     /**
      * 获取已登录用户的消息列表，对于每一个会话显示最新的消息。
      * 其中显示的内容包括某个会话的最新消息、未读消息数目、所有消息数目、
+     * 前端检测到toId为本用户时，显示未读消息条数
      *
      * @return
      */
@@ -89,13 +95,14 @@ public class MessageController {
             //此处1需要改掉
             List<Message> messageList = messageService.getMessageLists(1);
             List<Integer> messageCounts = messageService.getMessageListCounts(1);
-            List<Integer> notReadMessageCounts = messageService.getNotReadMessageCounts(1);
             List<MessageResponse> messageResponseList = new ArrayList<>();
             MessageResponse messageResponse = null;
             for (int i = 0; i < messageList.size(); ++i) {
                 messageResponse = new MessageResponse(messageList.get(i));
                 messageResponse.setMessageCounts(messageCounts.get(i));
-                messageResponse.setNotReadMessageCounts(notReadMessageCounts.get(i));
+                String conversationId = messageList.get(i).getConversationId();
+                int notReadMessageCount = messageService.getNotReadMessageCounts(1, conversationId);
+                messageResponse.setNotReadMessageCounts(notReadMessageCount);
                 messageResponseList.add(messageResponse);
             }
             jsonObject = jsonUtil.toJsonObject("00", "获取信息成功", messageResponseList);
@@ -103,6 +110,48 @@ public class MessageController {
             jsonObject = jsonUtil.toJsonObject("02", "获取消息时失败", null);
             logger.error("获取信息时失败： " + e.getMessage());
             e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+    /**
+     * 查看一个会话的所有消息内容，查看之后该会话的所有消息均显示为已读。
+     *
+     * @param conversationId
+     * @return
+     */
+    @GetMapping("/details")
+    public JSONObject messageDetails(@RequestParam("conversationId") String conversationId) {
+        JSONObject jsonObject;
+        try {
+            if (StringUtils.isBlank(conversationId)) {
+                return jsonUtil.toJsonObject("01", "参数不合法", null);
+            }
+            //返回消息详情
+            List<Message> messageList = messageService.getMessageListsByConversationId(conversationId);
+            //将该会话的消息设置为已读，即status设为1
+            messageService.markMessageReaded(conversationId);
+            jsonObject = jsonUtil.toJsonObject("00", "查询成功", messageList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            jsonObject = jsonUtil.toJsonObject("02", "查询详细信息时出错", null);
+            logger.error("查询详细信息时出错 " + e.getMessage());
+        }
+        return jsonObject;
+    }
+    @GetMapping("/delete")
+    public JSONObject deleteMessage(@RequestParam("conversationId") String conversationId){
+        JSONObject jsonObject;
+        try{
+            if (StringUtils.isBlank(conversationId)){
+                return jsonUtil.toJsonObject("01","参数不合法");
+            }
+            messageService.deleteMessage(conversationId);
+            jsonObject=jsonUtil.toJsonObject("00","删除成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error("删除时出错 "+e.getMessage());
+            jsonObject=jsonUtil.toJsonObject("02","删除时出错");
         }
         return jsonObject;
     }

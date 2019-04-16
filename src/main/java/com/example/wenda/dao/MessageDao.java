@@ -26,12 +26,18 @@ public interface MessageDao {
     List<Integer> getMessageCounts(int userId);
 
     //根据from_id和to_id来查询Message对象,返回id最小的Message
-    Message getMinIdMessage(@Param("fromId") int fromId,
-                            @Param("toId") int toId);
+    Message getMinIdMessage(List list);
 
-    //获取所有会话未读消息的条数，按照时间排序
-    List<Integer> getNotReadMessageCounts(int toId);
+    //获取某一个会话未读消息的条数，按照时间排序
+    Integer getNotReadMessageCounts(@Param("toId") int toId,
+                                    @Param("conversationId") String conversationId);
 
     //根据conversationId更新status值,从1改为0
     int updateStatus(String conversationId);
+
+    //根据conversationId更新is_read值,从0改为1
+    int updateIsRead(String conversationId);
+
+    //根据conversationId来获取Message
+    List<Message> getMessageListsByConversationId(String conversationId);
 }

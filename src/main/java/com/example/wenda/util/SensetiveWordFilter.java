@@ -133,12 +133,6 @@ public class SensetiveWordFilter implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         try {
-            //通过springboot配置文件读取敏感词文件的存放目录
-            /*Properties properties = new Properties();
-            File file = new File("classpath:application.properties");
-            FileInputStream fileInputStream = new FileInputStream(file);
-            properties.load(fileInputStream);
-            String path = properties.getProperty("sensetiveWordFilePath");*/
             InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("sensetiveWord.txt");
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
             String lineText;

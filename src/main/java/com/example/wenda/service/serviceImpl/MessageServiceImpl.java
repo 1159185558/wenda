@@ -7,6 +7,7 @@ import com.example.wenda.util.SensetiveWordFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,7 +36,10 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public Message getMessage(int fromId, int toId) {
-        return messageDao.getMinIdMessage(fromId, toId);
+        List<Integer> list = new ArrayList<>();
+        list.add(fromId);
+        list.add(toId);
+        return messageDao.getMinIdMessage(list);
     }
 
     @Override
@@ -44,12 +48,22 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<Integer> getNotReadMessageCounts(int toId) {
-        return messageDao.getNotReadMessageCounts(toId);
+    public Integer getNotReadMessageCounts(int toId, String conversationId) {
+        return messageDao.getNotReadMessageCounts(toId, conversationId);
     }
 
     @Override
     public int deleteMessage(String conversationId) {
         return messageDao.updateStatus(conversationId) > 0 ? messageDao.updateStatus(conversationId) : 0;
+    }
+
+    @Override
+    public int markMessageReaded(String conversationId) {
+        return messageDao.updateIsRead(conversationId);
+    }
+
+    @Override
+    public List<Message> getMessageListsByConversationId(String conversationId) {
+        return messageDao.getMessageListsByConversationId(conversationId);
     }
 }

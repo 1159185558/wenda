@@ -24,8 +24,12 @@ public interface MessageService {
     List<Integer> getMessageListCounts(int userId);
 
     //获取每个会话的未读消息数目
-    List<Integer> getNotReadMessageCounts(int toId);
+    Integer getNotReadMessageCounts(int toId, String conversationId);
 
     //删除某一条消息
     int deleteMessage(String conversationId);
+
+    int markMessageReaded(String conversationId);
+
+    List<Message> getMessageListsByConversationId(String conversationId);
 }
