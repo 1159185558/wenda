@@ -47,4 +47,9 @@ public class MessageServiceImpl implements MessageService {
     public List<Integer> getNotReadMessageCounts(int toId) {
         return messageDao.getNotReadMessageCounts(toId);
     }
+
+    @Override
+    public int deleteMessage(String conversationId) {
+        return messageDao.updateStatus(conversationId) > 0 ? messageDao.updateStatus(conversationId) : 0;
+    }
 }

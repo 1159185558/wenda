@@ -25,8 +25,29 @@ public class Message {
     private Date createDate;
     //默认为0，表示未读
     private int isRead;
+    //默认为1，表示该消息有效；0表示无效，即被删除
+    private int status;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public Message() {
+    }
+
+    public Message(Message message) {
+        id = message.id;
+        fromId = message.fromId;
+        toId = message.toId;
+        content = message.content;
+        conversationId = message.conversationId;
+        createDate = message.createDate;
+        isRead = message.isRead;
+        status = message.status;
     }
 
     public int getId() {

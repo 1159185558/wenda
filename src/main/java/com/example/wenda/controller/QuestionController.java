@@ -48,7 +48,7 @@ public class QuestionController {
     @PostMapping("/publish")
     public JSONObject publishQuestion(@RequestParam("title") String title,
                                       @RequestParam("content") String content) {
-        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObject;
         try {
             Question question = new Question();
             question.setCreatedDate(new Date());
@@ -81,7 +81,7 @@ public class QuestionController {
     public JSONObject deleteQuestion(@RequestParam("questionId") int questionId,
                                      @RequestParam("user") String user,
                                      HttpServletRequest request) {
-        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObject;
         try {
             if (questionId <= 0) {
                 return jsonUtil.toJsonObject("03", "参数不合法");
@@ -122,7 +122,7 @@ public class QuestionController {
      */
     @GetMapping("/questionId")
     public JSONObject getQuestion(@RequestParam("questionId") int questionId) {
-        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObject;
         try {//首先判断参数是否合法
             if (questionId <= 0) {
                 return jsonUtil.toJsonObject("01", "参数不合法", null);

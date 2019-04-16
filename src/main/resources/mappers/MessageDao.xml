@@ -3,29 +3,29 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.wenda.dao.MessageDao">
     <select id="getMessageLists" parameterType="Integer" resultType="com.example.wenda.model.Message">
-        select * from message where
-
-                (from_id = #{userId} or to_id = #{userId}) and
-                create_date in (select max(create_date) as create_date from message group by conversation_id)
-                order by create_date desc
+        select * from message where (from_id = #{userId} or to_id = #{userId}) and status = 1
+        and create_date in
+        (
+            select max(create_date) as create_date from message where status = 1 group by conversation_id
+        )
+        order by create_date desc
 
     </select>
     <select id="getMessageCounts" parameterType="Integer" resultType="Integer">
-        select count(*) from message
-        <where>
-            <if test="userId != null">
-                from_id = #{userId} or to_id = #{userId}
-                group by conversation_id order by create_date desc
-            </if>
-        </where>
+        select count(*) from message where (from_id = #{userId} or to_id = #{userId}) and status = 1
+        group by conversation_id
+        order by create_date desc
+
     </select>
     <select id="getMinIdMessage" resultType="com.example.wenda.model.Message">
-        select * from message where from_id = #{fromId} and to_id = #{toId} and id in(
-        select min(id) as id from message where from_id = #{fromId} and to_id = #{toId}
+        select * from message where from_id = #{fromId} and to_id = #{toId} and status and id in
+        (
+            select min(id) as id from message where from_id = #{fromId} and to_id = #{toId} and status = 1
         )
     </select>
     <select id="getNotReadMessageCounts" parameterType="Integer" resultType="Integer">
-        select * from message where is_read = 0 and to_id = #{toId} group by conversation_id
+        select * from message where is_read = 0 and to_id = #{toId} and status = 1
+        group by conversation_id
         order by create_date desc
     </select>
     <insert id="addMessage" parameterType="com.example.wenda.model.Message">
@@ -72,4 +72,7 @@
             </if>
         </trim>
     </insert>
+    <update id="updateStatus" parameterType="String">
+        update message set status = 0 where conversation_id = #{conversationId}
+    </update>
 </mapper>

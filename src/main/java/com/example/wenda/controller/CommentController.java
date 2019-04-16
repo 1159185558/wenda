@@ -48,7 +48,7 @@ public class CommentController {
     @PostMapping("/add")
     public JSONObject addComment(@RequestParam("content") String content,
                                  @RequestParam("questionId") int questionId) {
-        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObject;
         try {
             //此处以后添加验证用户是否登录，未登录则跳转到登录页面，仅仅在登录之后才可以进行发表评论
             //从session中读取userId，或者HostHolder中获取user对象
@@ -89,7 +89,7 @@ public class CommentController {
     public JSONObject deleteComment(@RequestParam("commentId") int commentId,
                                     @RequestParam("user") String user,
                                     HttpServletRequest request) {
-        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObject;
         try {
             HttpSession session = request.getSession();
             String username = (String) session.getAttribute("user");

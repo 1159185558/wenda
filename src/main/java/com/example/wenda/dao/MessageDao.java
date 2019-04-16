@@ -31,4 +31,7 @@ public interface MessageDao {
 
     //获取所有会话未读消息的条数，按照时间排序
     List<Integer> getNotReadMessageCounts(int toId);
+
+    //根据conversationId更新status值,从1改为0
+    int updateStatus(String conversationId);
 }
