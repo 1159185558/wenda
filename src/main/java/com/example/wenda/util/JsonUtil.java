@@ -10,16 +10,19 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class JsonUtil {
-    private static JSONObject jsonObject = new JSONObject();
-    public JSONObject toJsonObject(String code,String msg){
-        jsonObject.put("code",code);
-        jsonObject.put("msg",msg);
+
+    public JSONObject toJsonObject(String code, String msg) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", code);
+        jsonObject.put("msg", msg);
         return jsonObject;
     }
-    public JSONObject toJsonObject(String code,String msg,Object data){
-        jsonObject.put("code",code);
-        jsonObject.put("msg",msg);
-        jsonObject.put("data",data);
+
+    public JSONObject toJsonObject(String code, String msg, Object data) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", code);
+        jsonObject.put("msg", msg);
+        jsonObject.put("data", data);
         return jsonObject;
     }
 }

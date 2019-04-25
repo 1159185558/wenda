@@ -1,9 +1,9 @@
 package com.example.wenda.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.wenda.model.*;
+import com.example.wenda.entity.*;
 import com.example.wenda.service.CommentService;
-import com.example.wenda.service.LoginService;
+import com.example.wenda.service.UserService;
 import com.example.wenda.service.QuestionService;
 import com.example.wenda.util.JsonUtil;
 import org.slf4j.Logger;
@@ -35,7 +35,7 @@ public class QuestionController {
     @Autowired
     private CommentService commentService;
     @Autowired
-    private LoginService loginService;
+    private UserService userService;
 
     /**
      * 需要登录验证
@@ -141,13 +141,13 @@ public class QuestionController {
                 QuestionResponse questionResponse;
                 for (Comment comment : list) {
                     int userId = comment.getUserId();
-                    String uesrname1 = loginService.getUsernameById(userId);
+                    String uesrname1 = userService.getUsernameById(userId);
                     questionResponse = new QuestionResponse(uesrname1, comment);
                     List<Comment> list1 = commentService.getAllCommentsByEntity(EntityType.ENTITY_COMMENT, comment.getId());
                     //用来存储每个对问题回答的评论，评论有多条，因此返回一个list
                     List<QuestionResponse> list2 = new LinkedList<>();
                     for (Comment comment1 : list1) {
-                        String username2 = loginService.getUsernameById(comment1.getUserId());
+                        String username2 = userService.getUsernameById(comment1.getUserId());
                         QuestionResponse questionResponse1 = new QuestionResponse(username2, comment1);
                         list2.add(questionResponse1);
 

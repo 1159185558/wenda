@@ -2,7 +2,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.wenda.dao.MessageDao">
-    <select id="getMessageLists" parameterType="Integer" resultType="com.example.wenda.model.Message">
+    <select id="getMessageLists" parameterType="Integer" resultType="com.example.wenda.entity.Message">
         select * from message where (from_id = #{userId} or to_id = #{userId}) and status = 1
         and create_date in
         (
@@ -17,7 +17,7 @@
         order by create_date desc
 
     </select>
-    <select id="getMinIdMessage" resultType="com.example.wenda.model.Message">
+    <select id="getMinIdMessage" resultType="com.example.wenda.entity.Message">
         select * from message where from_id in
         <foreach collection="list" index="index" item="item"
                  open="(" separator="," close=")">
@@ -49,7 +49,7 @@
         and conversation_id = #{conversationId}
         and status = 1
     </select>
-    <insert id="addMessage" parameterType="com.example.wenda.model.Message">
+    <insert id="addMessage" parameterType="com.example.wenda.entity.Message">
         insert into message
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="fromId != null">
@@ -99,7 +99,7 @@
     <update id="updateIsRead" parameterType="String">
         update message set is_read = 1 where conversation_id = #{conversationId}
     </update>
-    <select id="getMessageListsByConversationId" parameterType="String" resultType="com.example.wenda.model.Message">
+    <select id="getMessageListsByConversationId" parameterType="String" resultType="com.example.wenda.entity.Message">
         select * from message where conversation_id = #{conversationId} order by create_date desc
     </select>
 </mapper>

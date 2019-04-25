@@ -1,15 +1,14 @@
 package com.example.wenda.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.wenda.model.HostHolder;
-import com.example.wenda.model.Message;
-import com.example.wenda.model.MessageResponse;
-import com.example.wenda.model.User;
-import com.example.wenda.service.LoginService;
+import com.example.wenda.entity.HostHolder;
+import com.example.wenda.entity.Message;
+import com.example.wenda.entity.MessageResponse;
+import com.example.wenda.entity.User;
+import com.example.wenda.service.UserService;
 import com.example.wenda.service.MessageService;
 import com.example.wenda.util.JsonUtil;
 import org.apache.commons.lang.StringUtils;
-import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class MessageController {
     @Autowired
     MessageService messageService;
     @Autowired
-    LoginService loginService;
+    UserService userService;
     @Autowired
     HostHolder hostHolder;
     @Autowired
@@ -43,7 +42,7 @@ public class MessageController {
             if (StringUtils.isBlank(cotent) || StringUtils.isBlank(toName)) {
                 return jsonUtil.toJsonObject("04", "参数不合法");
             }
-            User user = loginService.getUserByName(toName);
+            User user = userService.getUserByName(toName);
             if (user == null) {
                 return jsonUtil.toJsonObject("01", "用户不存在");
             }

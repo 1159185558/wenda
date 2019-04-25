@@ -1,6 +1,4 @@
-package com.example.wenda.model;
-
-import java.util.List;
+package com.example.wenda.entity;
 
 /**
  * @Author: weilei

@@ -17,15 +17,10 @@
         </where>
 
     </select>
-    <select id="getUserCommentCount" parameterType="int" resultType="int">
-        select count (*) from commment
-        <where>
-            <if test="userId != null">
-                user_id = #{userId} and status = 1
-            </if>
-        </where>
+    <select id="getUserCommentCount" parameterType="Integer" resultType="Integer">
+        select count(*) from comment where user_id = #{userId} and entity_type = 1 and status = 1
     </select>
-    <select id="getCommentListByEntity" resultType="com.example.wenda.model.Comment">
+    <select id="getCommentListByEntity" resultType="com.example.wenda.entity.Comment">
         select * from comment
         <where>
             <if test="entityId != null">
@@ -37,10 +32,10 @@
         </where>
         order by create_date desc
     </select>
-    <select id="getCommentById" parameterType="int" resultType="com.example.wenda.model.Comment">
+    <select id="getCommentById" parameterType="int" resultType="com.example.wenda.entity.Comment">
         select * from comment where id = #{id} and status = 1
     </select>
-    <insert id="addComment" parameterType="com.example.wenda.model.Comment">
+    <insert id="addComment" parameterType="com.example.wenda.entity.Comment">
         insert into comment
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="userId != null">

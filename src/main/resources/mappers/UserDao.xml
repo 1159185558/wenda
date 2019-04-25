@@ -5,7 +5,7 @@
     <select id="getPasswordByUserName" parameterType="String" resultType="String">
         select password from `user` where `name` = #{name}
     </select>
-    <select id="getUserByName" parameterType="String" resultType="com.example.wenda.model.User">
+    <select id="getUserByName" parameterType="String" resultType="com.example.wenda.entity.User">
         select * from  `user` where `name` = #{name}
     </select>
     <select id="getSaltByName" parameterType="String" resultType="String">
@@ -17,10 +17,10 @@
     <select id="getUsernameById" parameterType="Integer" resultType="String">
         select `name` from `user` where id = #{id}
     </select>
-    <select id="getUserById" parameterType="Integer" resultType="com.example.wenda.model.User">
+    <select id="getUserById" parameterType="Integer" resultType="com.example.wenda.entity.User">
         select * from `user` where id = #{id}
     </select>
-    <insert id="addUserData" parameterType="com.example.wenda.model.User">
+    <insert id="addUserData" parameterType="com.example.wenda.entity.User">
         insert into `user`
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="name != null">

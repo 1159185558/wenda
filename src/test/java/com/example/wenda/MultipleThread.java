@@ -1,6 +1,13 @@
 package com.example.wenda;
 
-import java.util.Date;
+import com.example.wenda.util.JedisAdapter;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.Response;
+import redis.clients.jedis.Transaction;
+
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.*;
 
 /**
@@ -161,10 +168,19 @@ public class MultipleThread {
     public static void main(String[] args) {
         //synchronizedTest();
         //new MultipleThread().test();
-        //testLocal();
+       /* //testLocal();
         long start = new Date().getTime();
         executorTest();
         long end = new Date().getTime();
-        System.out.println(end-start);
+        System.out.println(end-start);*/
+       JedisAdapter jedisAdapter = new JedisAdapter();
+        Jedis jedis = new Jedis();
+        Transaction transaction = jedis.multi();
+        transaction.zadd("test",1,"1");
+        transaction.zadd("test",2,"3");
+        Response<Set<String>> response = transaction.zrange("test",0,-1);
+        transaction.zrem("test","1");
+        Response<Set<String>> response1 = transaction.zrange("test",0,-1);
+        transaction.exec();
     }
 }

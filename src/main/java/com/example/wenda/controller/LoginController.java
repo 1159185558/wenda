@@ -1,8 +1,8 @@
 package com.example.wenda.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.wenda.model.User;
-import com.example.wenda.service.LoginService;
+import com.example.wenda.entity.User;
+import com.example.wenda.service.UserService;
 import com.example.wenda.util.JsonUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -13,13 +13,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @RestController
 public class LoginController {
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
     @Autowired
-    LoginService loginService;
+    UserService userService;
     @Autowired
     JsonUtil jsonUtil;
 
@@ -32,7 +33,7 @@ public class LoginController {
                             HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
         try {
-            Map<String, Object> map = loginService.login(name, password);
+            Map<String, Object> map = userService.login(name, password);
             String code = (String) map.get("code");
             switch (code) {
                 case "00":
@@ -48,20 +49,18 @@ public class LoginController {
                     jsonObject = jsonUtil.toJsonObject(code, "密码不能为空");
                     break;
                 default:
-                    jsonUtil.toJsonObject("05", "嘿嘿嘿");
+                    jsonObject = jsonUtil.toJsonObject("05", "嘿嘿嘿");
                     break;
             }
-            /*HttpSession session = request.getSession();
-            session.setAttribute("user", name);*/
+            HttpSession session = request.getSession();
+            session.setAttribute("user", name);
             if (map.containsKey("ticket")) {
                 Cookie cookie = new Cookie("ticket", map.get("ticket").toString());
-                Cookie cookie1 = new Cookie("user", name);
                 cookie.setPath("/");
                 if (rememberme) {
                     cookie.setMaxAge(3600 * 24 * 5);
                 }
                 httpServletResponse.addCookie(cookie);
-                httpServletResponse.addCookie(cookie1);
                 if (StringUtils.isNotBlank(next)) {
                     jsonObject.put("next", next);
                 }
@@ -83,7 +82,7 @@ public class LoginController {
         String password = user.getPassword();
         JSONObject jsonObject = new JSONObject();
         try {
-            Map<String, Object> map = loginService.registerUser(name, password);
+            Map<String, Object> map = userService.registerUser(name, password);
             String code = (String) map.get("code");
             switch (code) {
                 case "00":
@@ -105,8 +104,8 @@ public class LoginController {
                     jsonUtil.toJsonObject("06", "嘿嘿嘿");
                     break;
             }
-            /*HttpSession session = request.getSession();
-            session.setAttribute("user", name);*/
+            HttpSession session = request.getSession();
+            session.setAttribute("user", name);
             if (map.containsKey("ticket")) {
                 Cookie cookie = new Cookie("ticket", map.get("ticket").toString());
                 cookie.setPath("/");
@@ -125,11 +124,11 @@ public class LoginController {
         return jsonObject.toJSONString();
     }
 
-    @GetMapping
+    @GetMapping("/logout")
     public JSONObject logout(@CookieValue("ticket") String ticket) {
         JSONObject jsonObject = new JSONObject();
         try {
-            loginService.logout(ticket);
+            userService.logout(ticket);
             jsonObject = jsonUtil.toJsonObject("00", "退出成功");
         } catch (Exception e) {
             jsonObject = jsonUtil.toJsonObject("01", "退出时出错");

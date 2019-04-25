@@ -1,6 +1,6 @@
 package com.example.wenda.service;
 
-import com.example.wenda.model.Message;
+import com.example.wenda.entity.Message;
 
 import java.util.List;
 

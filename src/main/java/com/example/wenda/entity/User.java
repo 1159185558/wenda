@@ -1,4 +1,4 @@
-package com.example.wenda.model;
+package com.example.wenda.entity;
 
 /**
  * @Author: weilei
@@ -12,6 +12,42 @@ public class User {
     private String password;
     private String salt;
     private String headUrl;
+    private Integer gender;
+    private String signature;
+    private String jobPosition;
+    private String industry;
+
+    public Integer getGender() {
+        return gender;
+    }
+
+    public void setGender(Integer gender) {
+        this.gender = gender;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
+    public String getJobPosition() {
+        return jobPosition;
+    }
+
+    public void setJobPosition(String jobPosition) {
+        this.jobPosition = jobPosition;
+    }
+
+    public String getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(String industry) {
+        this.industry = industry;
+    }
 
     public User() {
     }

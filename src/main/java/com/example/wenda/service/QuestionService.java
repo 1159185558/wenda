@@ -1,6 +1,6 @@
 package com.example.wenda.service;
 
-import com.example.wenda.model.Question;
+import com.example.wenda.entity.Question;
 
 import java.util.Map;
 
@@ -21,4 +21,6 @@ public interface QuestionService {
     int deleteQuestion(Integer id,int status);
 
     Question getQuestionById(int id);
+
+    int getUserQuestionCount(int userId);
 }

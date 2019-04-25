@@ -1,7 +1,7 @@
 package com.example.wenda.service.serviceImpl;
 
 import com.example.wenda.dao.CommentDao;
-import com.example.wenda.model.Comment;
+import com.example.wenda.entity.Comment;
 import com.example.wenda.service.CommentService;
 import com.example.wenda.util.SensetiveWordFilter;
 import org.springframework.beans.factory.annotation.Autowired;

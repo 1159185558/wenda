@@ -1,6 +1,6 @@
 package com.example.wenda.dao;
 
-import com.example.wenda.model.User;
+import com.example.wenda.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 

@@ -14,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 
 @Configuration
-public class WenDaWebConfiguration implements WebMvcConfigurer {
+public class WendaWebConfiguration implements WebMvcConfigurer {
     @Autowired
     PassportedInterceptor passportedInterceptor;
     @Autowired
@@ -23,7 +23,7 @@ public class WenDaWebConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         /*registry.addInterceptor(passportedInterceptor);
-        registry.addInterceptor(loginRequiredInterceptor).addPathPatterns("/user/*");
+        registry.addInterceptor(loginRequiredInterceptor).addPathPatterns("/sns/*");
         WebMvcConfigurer.super.addInterceptors(registry);*/
     }
 }

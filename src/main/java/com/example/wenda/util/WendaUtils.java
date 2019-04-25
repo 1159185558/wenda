@@ -4,17 +4,11 @@ import java.security.MessageDigest;
 
 /**
  * @Author: weilei
- * @CreateTime: 2019/3/25  14:45
+ * @CreateTime: 2019/4/24  16:08
  * @Description:
  */
 
-public class MD5 {
-    /**
-     * 将输入的字符串通过MD5进行加密，返回加密后的字符串
-     *
-     * @param key
-     * @return
-     */
+public class WendaUtils {
     public static String MD5(String key) {
         char hexDigits[] = {
                 '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
@@ -40,5 +34,24 @@ public class MD5 {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    /**
+     *  计算问题的排名分数
+     * @param qView 问题浏览数
+     * @param qAnswer 问题回答数目
+     * @param qScore 问题的赞踩数目差
+     * @param sumOfaScore 问题所有回答赞踩差的和
+     * @param qAge 问题自发布到现在的时间差
+     * @param qUpdated 问题最新的回答时间到现在的时间差
+     * @return
+     */
+    public static Double sortAlgorithm(long qView, long qAnswer, long qScore, long sumOfaScore,
+                                       long qAge, long qUpdated) {
+        //分子
+        double numerator = Math.log10(qView*4)+(qAnswer*qScore)/5+sumOfaScore;
+        //分母
+        double denominator = Math.pow(1+(qAge+qUpdated)/2,1.5);
+        return numerator/denominator;
     }
 }

@@ -1,7 +1,7 @@
 package com.example.wenda.service;
 
 
-import com.example.wenda.model.Comment;
+import com.example.wenda.entity.Comment;
 
 import java.util.List;
 

@@ -8,13 +8,16 @@
     <update id="updateStatus">
         update question set status = #{status} where id = #{id}
     </update>
+    <select id="getUserQuestionCount" parameterType="Integer" resultType="Integer">
+        select count(*) from question where user_id = #{userId}
+    </select>
     <select id="getCommentCount" parameterType="int" resultType="int">
         select comment_count from question where id = #{id} and status = 1
     </select>
-    <select id="getQuestionById" resultType="com.example.wenda.model.Question">
+    <select id="getQuestionById" resultType="com.example.wenda.entity.Question">
         select * from question where id = #{id} and status = 1
     </select>
-    <insert id="addQuestion" parameterType="com.example.wenda.model.Question">
+    <insert id="addQuestion" parameterType="com.example.wenda.entity.Question">
         insert into question
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="title != null">

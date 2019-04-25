@@ -1,6 +1,6 @@
 package com.example.wenda.dao;
 
-import com.example.wenda.model.Question;
+import com.example.wenda.entity.Question;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -21,6 +21,8 @@ public interface QuestionDao {
                            @Param("commentCount") int commentCount);
 
     int getCommentCount(int id);
+
+    int getUserQuestionCount(int userId);
 
     int updateStatus(@Param("id") int id,
                      @Param("status") int status);

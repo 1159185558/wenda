@@ -2,9 +2,9 @@ package com.example.wenda.interceptor;
 
 import com.example.wenda.dao.LoginTicketDao;
 import com.example.wenda.dao.UserDao;
-import com.example.wenda.model.HostHolder;
-import com.example.wenda.model.LoginTicket;
-import com.example.wenda.model.User;
+import com.example.wenda.entity.HostHolder;
+import com.example.wenda.entity.LoginTicket;
+import com.example.wenda.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -45,7 +45,7 @@ public class PassportedInterceptor implements HandlerInterceptor {
         if (ticket != null) {
             LoginTicket loginTicket = loginTicketDao.getLoginTicketByTicket(ticket);
             if (loginTicket == null || loginTicket.getExpired().before(new Date()) || loginTicket.getStatus() != 1) {
-                if (loginTicket.getExpired().before(new Date())) {
+                if (loginTicket != null && loginTicket.getExpired().before(new Date())) {
                     //ticket时间到期后需要修改相应的状态
                     loginTicketDao.updateStatus(0, ticket);
                 }

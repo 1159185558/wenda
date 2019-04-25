@@ -1,4 +1,4 @@
-package com.example.wenda.model;
+package com.example.wenda.entity;
 
 /**
  * @Author: weilei

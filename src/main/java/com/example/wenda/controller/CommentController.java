@@ -2,8 +2,8 @@ package com.example.wenda.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.wenda.model.Comment;
-import com.example.wenda.model.EntityType;
+import com.example.wenda.entity.Comment;
+import com.example.wenda.entity.EntityType;
 import com.example.wenda.service.CommentService;
 import com.example.wenda.service.QuestionService;
 import com.example.wenda.util.JsonUtil;

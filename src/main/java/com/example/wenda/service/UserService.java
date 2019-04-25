@@ -1,6 +1,6 @@
 package com.example.wenda.service;
 
-import com.example.wenda.model.User;
+import com.example.wenda.entity.User;
 
 import java.util.Map;
 
@@ -10,7 +10,7 @@ import java.util.Map;
  * @Description:
  */
 
-public interface LoginService {
+public interface UserService {
 
     String decryptPassword(String password);
 
@@ -25,4 +25,6 @@ public interface LoginService {
     void logout(String ticket);
 
     User getUserByName(String name);
+
+    User getUserById(int id);
 }

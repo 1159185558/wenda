@@ -1,7 +1,7 @@
 package com.example.wenda.service.serviceImpl;
 
 import com.example.wenda.dao.QuestionDao;
-import com.example.wenda.model.Question;
+import com.example.wenda.entity.Question;
 import com.example.wenda.service.QuestionService;
 import com.example.wenda.util.SensetiveWordFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,5 +63,10 @@ public class QuestionServiImpl implements QuestionService {
     @Override
     public Question getQuestionById(int id) {
         return questionDao.getQuestionById(id);
+    }
+
+    @Override
+    public int getUserQuestionCount(int userId) {
+        return questionDao.getUserQuestionCount(userId);
     }
 }

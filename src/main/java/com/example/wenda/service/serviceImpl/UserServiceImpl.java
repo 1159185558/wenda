@@ -2,11 +2,11 @@ package com.example.wenda.service.serviceImpl;
 
 import com.example.wenda.dao.LoginTicketDao;
 import com.example.wenda.dao.UserDao;
-import com.example.wenda.model.LoginTicket;
-import com.example.wenda.model.User;
-import com.example.wenda.service.LoginService;
-import com.example.wenda.util.MD5;
+import com.example.wenda.entity.LoginTicket;
+import com.example.wenda.entity.User;
+import com.example.wenda.service.UserService;
 import com.example.wenda.util.RSAUtils;
+import com.example.wenda.util.WendaUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
  */
 
 @Service
-public class LoginServiceImpl implements LoginService {
+public class UserServiceImpl implements UserService {
     @Autowired
     private RSAUtils rsaUtils;
     @Autowired
@@ -82,7 +82,7 @@ public class LoginServiceImpl implements LoginService {
         //生成十位随机数作为密码盐
         String salt = UUID.randomUUID().toString().substring(0, 10);
         user.setSalt(salt);
-        user.setPassword(MD5.MD5(password + salt));
+        user.setPassword(WendaUtils.MD5(password + salt));
         String headUrl = String.format("http://images.nowcoder.com/head/%dt.png", new Random().nextInt(1000));
         user.setHeadUrl(headUrl);
         userDao.addUserData(user);
@@ -110,7 +110,7 @@ public class LoginServiceImpl implements LoginService {
         }
         String tmpPassword = userDao.getPasswordByUserName(name);
         String salt = userDao.getSaltByName(name);
-        if (!MD5.MD5(password + salt).equals(tmpPassword)) {
+        if (!WendaUtils.MD5(password + salt).equals(tmpPassword)) {
             map.put("code", "02");//用户名获密码不正确
             return map;
         }
@@ -129,6 +129,11 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public User getUserByName(String name) {
         return userDao.getUserByName(name);
+    }
+
+    @Override
+    public User getUserById(int id) {
+        return userDao.getUserById(id);
     }
 
     public String addLoginTicket(Integer userId) {
